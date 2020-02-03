@@ -1,0 +1,11 @@
+{
+    "model" : {
+       "folder": ".models/",
+       "name": "res34-stage-2-512.pkl"
+    },
+
+    "input": {
+        "images_folder":   "/Users/prav/dev/VOC-hackathon/JPEGImages/"
+    }
+
+}

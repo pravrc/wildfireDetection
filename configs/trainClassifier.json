@@ -1,0 +1,22 @@
+{
+    "model" : {
+        "transfer_model_folder": ".models/",
+        "transfer_model_name": "res34-stage-2-512.pkl",      
+        "save_model_folder":".newmodels/",
+        "save_model_name":"fuego.pkl"
+    },
+
+    "train": {
+        "train_image_folder":   "/Users/prav/Insight/Fuego/wildfire_smoke_data/train",
+        "validation_folder_name": "",
+        "test_image_folder":    "",
+        "grid_size":            512,
+        "labels":               "['smoke','nosmoke']",
+        "batch_size":           32,
+        "learning_rate":        1e-4,
+        "nb_epochs":            100,
+        "gpu":                 "0",
+        "debug":                true
+    }
+   
+}
