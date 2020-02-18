@@ -1,13 +1,13 @@
 
 # Early Wildfire Detection from Images
 
-A project for detection and classification of wildfire images
+A project for detection and classification of wildfire from images
 
 This project has two repositories. One for classification and one for wildfire detection using bounding boxes.
-Fire detection for yolov3 is using the forked version of https://github.com/experiencor/keras-yolo3 along with some modifications
+Fire detection using yolov3 is from the forked version of https://github.com/experiencor/keras-yolo3 along with some modifications
 
 ---
-## Setup and Installation:
+## SETUP
 
 ### Prerequisites:
 Python3
