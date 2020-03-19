@@ -29,10 +29,20 @@ def create_transfer_model(
     print(device)
     if os.path.exists(model_folder):
         learn = load_learner(model_folder,model_name)
-    return learn    
+    return learn  
+    
+def create_model(
+    data,
+    gpu,
+    lr
+):
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    print(device)
+    learn = cnn_learner(data,models.resnet34,metrics=[accuracy,Precision(),Recall(),FBeta()])
+    return learn        
 
 
-def train_model(
+def train_transfer_model(
     learn,
     data,
     save_model_path,
@@ -42,6 +52,20 @@ def train_model(
     learn.data=data
     learn.fit(1)
     learn.export(save_model_path,save_model_name)
+
+def train_model(
+    learn,
+    data,
+    save_model_path,
+    save_model_name
+
+):
+    learn.data=data
+    lr = 3e-3
+    learn.fit_one_cycle(3,slice(lr))
+    learn.unfreeze()
+    learn.fit_one_cycle(5,slice(1e-5,lr/5))
+    learn.export(save_model_path,save_model_name)   
     
 
 #If validation folder is present it should be a sibling of training folder.
@@ -68,6 +92,7 @@ def processData(train_folder,validate_folder_name,imagesize,batchsize):
       )
 
 
+
 def _main_(args):
     config_path  = args.conf
     with open(config_path) as config_buffer:    
@@ -87,19 +112,33 @@ def _main_(args):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print(device)
     
-    learn = create_transfer_model(
-        config['model']['transfer_model_folder'],
-        config['model']['transfer_model_name'],
-        config['train']['gpu'],
-        config['train']['learning_rate']
-    )
+    if(config['train']['use_transfer_model'] == True):
+        learn = create_transfer_model(
+            config['model']['transfer_model_folder'],
+            config['model']['transfer_model_name'],
+            config['train']['gpu'],
+            config['train']['learning_rate']
+        )
+        train_transfer_model(
+            learn,
+            data,
+            save_model_path,
+            save_model_name
+        )    
+    else:
+        learn = create_model(
+            data,
+            config['train']['gpu'],
+            config['train']['learning_rate']
+        )
+        train_model(
+            learn,
+            data,
+            config['model']['save_model_folder'],
+            config['model']['save_model_name']  
+        )    
 
-    train_model(
-        learn,
-        data,
-        config['model']['save_model_folder'],
-        config['model']['save_model_name']  
-    )
+    
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser(
