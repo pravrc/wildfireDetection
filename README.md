@@ -1,3 +1,4 @@
+[![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/6887/badge)](https://bestpractices.coreinfrastructure.org/projects/6887)
 
 # Early Wildfire Detection from Images
 
